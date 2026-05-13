@@ -1,0 +1,32 @@
+{
+  "model_default": "sonnet",
+  "subagent": {
+    "model": "haiku",
+    "max": 3,
+    "parallel": true
+  },
+  "caveman": {
+    "enabled": true,
+    "level": "lite",
+    "compress_claude_md": true
+  },
+  "compact_threshold": 60,
+  "extended_thinking": "low",
+  "max_thinking_tokens": 10000,
+  "memory": {
+    "decisions_file": true,
+    "claude_mem": false
+  },
+  "codebase_index": false,
+  "claudeignore": true,
+  "path_scoped_rules": true,
+  "active_skills": [
+    "multiskill-optimum-saver",
+    "caveman",
+    "strategic-compact",
+    "css-expert",
+    "ad-creative",
+    "mobile-inspector",
+    "docx"
+  ]
+}
