@@ -1,150 +1,145 @@
 ---
 name: multiskill-optimum-saver
 description: >
-  Evaluates session complexity at start, recommends config changes, and
-  executes approved changes automatically. Multi-skill bundle: caveman,
-  codebase-memory, strategic-compact, css-expert, ad-creative,
-  mobile-responsiveness. Triggers: session start, /governor,
-  /mos-status, "what's my config", "optimize session".
-version: 2.0.0
+  Evaluates session complexity at start, displays a numbered level menu with
+  full parameters, and monitors every prompt for complexity drift — offering
+  to upgrade or downgrade in real time. Multi-skill bundle: caveman,
+  codebase-memory, strategic-compact, css-expert, ad-creative.
+  Triggers: session start, every user prompt, /governor, /mos-status.
+version: 3.0.0
 always: true
 requires:
   - JuliusBrussee/caveman
   - affaan-m/everything-claude-code/strategic-compact
 ---
 
-# MULTISKILL OPTIMUM SAVER (MOS)
+# MOS — MULTISKILL OPTIMUM SAVER
 
-## STEP 1 — READ CURRENT CONFIG
+## PRESET TABLE
 
-At the very start of every session, silently run:
-
-```bash
-cat ~/.claude/session-config.json 2>/dev/null || echo "CONFIG_NOT_FOUND"
-```
-
-If CONFIG_NOT_FOUND: use defaults: model=sonnet, caveman=lite, thinking=low,
-subagents=3(haiku), compact_threshold=60, max_thinking_tokens=10000
-
-Compute score:
-- model: haiku=18, sonnet=58, opus=100
-- thinking: off=0, low=8, high=22, max=38
-- caveman: off=0, lite=-2, full=-8, ultra=-16
-- subagents: count x (haiku=4|sonnet=7), capped at 28
-- claude-mem bonus: +4, codebase-memory bonus: +6
+| # | Level   | Model  | Caveman | Thinking | Subagents  | Score |
+|---|---------|--------|---------|----------|------------|-------|
+| 1 | TRIVIAL | haiku  | ultra   | off      | 0          | ~2    |
+| 2 | SIMPLE  | sonnet | full    | off      | 1×haiku    | ~48   |
+| 3 | MEDIUM  | sonnet | lite    | low      | 3×haiku    | ~64   |
+| 4 | HARD    | sonnet | lite    | high     | 4×sonnet   | ~98   |
+| 5 | EXPERT  | opus   | off     | high     | 5×sonnet   | ~157  |
 
 ---
 
-## STEP 2 — DETECT SESSION COMPLEXITY
-
-Run these silently at session start:
+## STEP 1 — READ CONFIG (silent)
 
 ```bash
+cat ~/.claude/session-config.json 2>/dev/null || echo "CONFIG_NOT_FOUND"
 find . -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" 2>/dev/null | wc -l
 git log --oneline -3 2>/dev/null
 head -20 CLAUDE.md 2>/dev/null || head -20 .claude/CLAUDE.md 2>/dev/null
 ```
 
-Classify based on signals + first user message:
+Defaults: model=sonnet, caveman=lite, thinking=low, subagents=3×haiku, compact=60%
 
-| Complexity | Min Score | Signals |
-|------------|-----------|---------|
-| TRIVIAL    | 18        | Q&A, translation, summarize, explain |
-| SIMPLE     | 32        | fix, change, add, style, rename, single file |
-| MEDIUM     | 55        | refactor, implement, feature, debug, component |
-| HARD       | 75        | architecture, integration, agent, PRD |
-| EXPERT     | 90        | rewrite, cross-cutting, all files, multi-agent |
+Score: model(haiku=18/sonnet=58/opus=100) + thinking(off=0/low=8/high=22/max=38) + caveman(off=0/lite=-2/full=-8/ultra=-16) + subagents(haiku×4/sonnet×7, max 28)
 
 ---
 
-## STEP 3 — OUTPUT STATUS BLOCK
+## STEP 2 — CLASSIFY COMPLEXITY
 
-Output at every session start:
-
-```
-╔═ MOS — MULTISKILL OPTIMUM SAVER ══════════════╗
-║  Model: [model]       Sub: [sub_model]x[n]    ║
-║  Caveman: [level]     Thinking: [level]        ║
-║  Compact@: [n]%       Score: [score]/140       ║
-╠═══════════════════════════════════════════════╣
-║  Session: [COMPLEXITY]  Reason: [brief]        ║
-║  Status:  [match / borderline / mismatch]      ║
-╚═══════════════════════════════════════════════╝
-```
-
-Status rules:
-- score >= minScore: Config matches session needs
-- score >= minScore x 0.8: borderline — minor change recommended
-- score < minScore x 0.8: mismatch — see recommendation
+| Level   | Min Score | Signals |
+|---------|-----------|---------|
+| TRIVIAL | 18        | Q&A, translate, summarize, explain |
+| SIMPLE  | 32        | fix, rename, style, single-file edit |
+| MEDIUM  | 55        | feature, refactor, debug, component |
+| HARD    | 75        | architecture, integration, agent, PRD |
+| EXPERT  | 90        | rewrite, cross-cutting, multi-agent |
 
 ---
 
-## STEP 4 — RECOMMEND CHANGES (mismatch only)
+## STEP 3 — SESSION START BLOCK (mandatory, before first response)
 
-If score < complexity minScore x 0.8, output:
+Display exactly this and wait for input:
 
 ```
-RECOMMENDATION: Config tuned for [current], session needs [detected].
-
-Suggested:
-  model:         [current] -> [recommended]
-  thinking:      [current] -> [recommended]
-  caveman_level: [current] -> [recommended]
-  max_subagents: [current] -> [recommended]
-
-Type "yes"/"approve" to apply. Type "no" to keep current.
+╔═ MOS ══════════════════════════════════════════════╗
+║  Detected: [LEVEL]                Score: [n]/140   ║
+║  Model: [model] · Thinking: [lvl] · Compact: [n]%  ║
+║  Caveman: [lvl] · Subagents: [n]×[model]           ║
+║  Status: [✓ match | ~ borderline | ⚠ mismatch]     ║
+╠════════════════════════════════════════════════════╣
+║  Change level? Type number — Enter to continue     ║
+║                                                    ║
+║  1. TRIVIAL │ haiku  · ultra · off  · 0 subs       ║
+║  2. SIMPLE  │ sonnet · full  · off  · 1×haiku      ║
+║  3. MEDIUM  │ sonnet · lite  · low  · 3×haiku      ║
+║  4. HARD    │ sonnet · lite  · high · 4×sonnet     ║
+║  5. EXPERT  │ opus   · off   · high · 5×sonnet     ║
+╚════════════════════════════════════════════════════╝
 ```
 
-Preset values:
-
-| Complexity | model  | caveman | thinking | subagents | sub_model |
-|------------|--------|---------|----------|-----------|-----------|
-| TRIVIAL    | haiku  | ultra   | off      | 0         | haiku     |
-| SIMPLE     | sonnet | full    | off      | 1         | haiku     |
-| MEDIUM     | sonnet | lite    | low      | 3         | haiku     |
-| HARD       | sonnet | lite    | high     | 4         | sonnet    |
-| EXPERT     | opus   | off     | high     | 5         | sonnet    |
+→ Mark current/detected level with ✓ at end of its row.
+→ User types 1–5: apply preset (Step 5). Confirm: `✓ Switched to [LEVEL].`
+→ Enter / anything else: continue silently.
 
 ---
 
-## STEP 5 — EXECUTE ON APPROVAL
+## STEP 4 — PROMPT MONITORING (every prompt)
 
-If user says "yes"/"approve"/"כן"/"אשר":
+After every prompt, silently check if complexity is 2+ levels from current config.
 
-1. Write updated config:
+**Too simple:**
+```
+💡 Prompt simpler than current config ([LEVEL]). Downgrade?
+  [show only levels below current, with full params]
+  [Enter = stay at [LEVEL]]
+```
+
+**Too complex:**
+```
+⚠ Prompt more complex than current config ([LEVEL]). Upgrade?
+  [show only levels above current, with full params]
+  [Enter = stay at [LEVEL]]
+```
+
+Throttle: max once/5 prompts · never repeat declined suggestion · min 2-level gap.
+
+---
+
+## STEP 5 — APPLY PRESET
+
 ```bash
 cat > ~/.claude/session-config.json << 'EOF'
 {
-  "model_default": "[recommended]",
+  "model_default": "[model]",
   "subagent": { "model": "[sub]", "max": [n], "parallel": true },
-  "caveman": { "enabled": true, "level": "[level]", "compress_claude_md": true },
-  "compact_threshold": [n],
-  "extended_thinking": "[level]",
-  "max_thinking_tokens": [n]
+  "caveman": { "enabled": true, "level": "[caveman]", "compress_claude_md": true },
+  "compact_threshold": [compact],
+  "extended_thinking": "[thinking]",
+  "max_thinking_tokens": [tokens]
 }
 EOF
-```
-
-2. Set env vars:
-```bash
 export ANTHROPIC_MODEL="[model]"
-export CLAUDE_CODE_SUBAGENT_MODEL="[sub_model]"
+export CLAUDE_CODE_SUBAGENT_MODEL="[sub]"
 ```
 
-3. Confirm: "Config updated and active for this session."
+| Level   | model  | sub    | n | caveman | thinking | tokens | compact |
+|---------|--------|--------|---|---------|----------|--------|---------|
+| TRIVIAL | haiku  | haiku  | 0 | ultra   | off      | 0      | 40%     |
+| SIMPLE  | sonnet | haiku  | 1 | full    | off      | 0      | 50%     |
+| MEDIUM  | sonnet | haiku  | 3 | lite    | low      | 8000   | 60%     |
+| HARD    | sonnet | sonnet | 4 | lite    | high     | 15000  | 70%     |
+| EXPERT  | opus   | sonnet | 5 | off     | high     | 32000  | 80%     |
 
-If declined: "Keeping current config. Ready to work."
+Confirm: `✓ [LEVEL] active. Model: [m] · Caveman: [c] · Thinking: [t] · Subs: [n]×[s]`
 
 ---
 
-## MULTI-SKILL ROUTING (automatic, silent)
+## MULTI-SKILL ROUTING (silent)
 
 | Trigger | Skill |
 |---------|-------|
-| z-index, stacking, RTL, CSS stuck, PNG | css-expert |
-| ad creative, image prompt, copy | ad-creative |
-| mobile layout, iOS, Android, responsive | mobile-inspector |
-| Word doc, DOCX, PDF, RTL document | docx |
+| z-index, stacking, RTL, CSS broken, PNG | css-expert |
+| ad creative, image prompt, copywriting | ad-creative |
+| mobile, iOS, Android, responsive | mobile-inspector |
+| Word, DOCX, PDF, RTL document | docx |
 | context > 60%, memory warning | strategic-compact |
 
 ---
@@ -153,8 +148,8 @@ If declined: "Keeping current config. Ready to work."
 
 | Command | Action |
 |---------|--------|
-| /governor | Show current config status |
+| /governor | Show full status + level menu |
 | /mos-status | Same as /governor |
-| /mos-preset [level] | Apply complexity preset |
-| /mos-reset | Restore default config |
+| /mos-preset [1-5] | Apply preset immediately |
+| /mos-reset | Restore default (MEDIUM) |
 | /mos-save | Save current as default |
