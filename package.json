@@ -1,6 +1,6 @@
 {
   "name": "mos-claude",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "MOS — AI optimization layer for Claude Code. Auto-scores task complexity (0-140), matches config to needs. Easy install: npx mos-claude",
   "bin": {
     "mos-install": "bin/mos-install.js"

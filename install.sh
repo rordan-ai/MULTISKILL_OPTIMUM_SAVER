@@ -79,7 +79,7 @@ IGEOF
   echo "✓ .claudeignore created"
 fi
 
-# Install MOS status injector hook
+# Install MOS version checker + status injector hooks
 HOOKS_DIR=~/.claude/hooks
 mkdir -p "$HOOKS_DIR"
 cp "$REPO_DIR/bin/mos-install.js" "$HOOKS_DIR/mos-status-injector.js" 2>/dev/null || true
@@ -112,21 +112,26 @@ HOOKEOF
   echo "✓ MOS status injector hook installed"
 fi
 
+# Copy version checker
+cp "$REPO_DIR/bin/mos-version-check.js" "$HOOKS_DIR/mos-version-check.js" 2>/dev/null
+echo "✓ MOS version checker hook installed"
+
 # Add hooks to settings.json
 SETTINGS=~/.claude/settings.json
 if [ ! -f "$SETTINGS" ]; then
   cat > "$SETTINGS" << 'SETEOF'
 {
   "hooks": {
-    "SessionStart": [{"hooks":[{"type":"command","command":"echo \"MOS active\"","timeout":5}]}],
+    "SessionStart": [{"hooks":[{"type":"command","command":"node ~/.claude/hooks/mos-version-check.js","timeout":5,"statusMessage":"Checking MOS updates..."}]}],
     "UserPromptSubmit": [{"hooks":[{"type":"command","command":"node ~/.claude/hooks/mos-status-injector.js","timeout":5,"statusMessage":"MOS status check..."}]}]
   }
 }
 SETEOF
   echo "✓ settings.json created with MOS hooks"
 else
-  echo "⚠  settings.json exists — add UserPromptSubmit hook manually if not present:"
-  echo '  {"type":"command","command":"node ~/.claude/hooks/mos-status-injector.js","timeout":5}'
+  echo "⚠  settings.json exists — add these hooks manually if not present:"
+  echo '  SessionStart: {"type":"command","command":"node ~/.claude/hooks/mos-version-check.js","timeout":5}'
+  echo '  UserPromptSubmit: {"type":"command","command":"node ~/.claude/hooks/mos-status-injector.js","timeout":5}'
 fi
 
 echo ""
