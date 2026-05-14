@@ -1,6 +1,6 @@
 # 🧠 MULTISKILL OPTIMUM SAVER (MOS)
 
-**Auto-optimize your Claude session config — every time, automatically.**
+**AI optimization layer for Claude Code — match processing power to task complexity, automatically.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-2.0.0-orange)](SKILL_EN.md)
@@ -8,15 +8,11 @@
 
 ---
 
-## The Problem
+MOS is an AI optimization layer designed to streamline work with Claude-based development tools through intelligent resource management. It solves the problem of token waste and unnecessary costs that occur when overpowered models are used for simple tasks — or conversely, when insufficient power degrades output quality on complex ones.
 
-You use Claude Code daily. But do you switch configs between tasks?
+Using a scoring algorithm (0–140), the system weighs parameters such as model type, thinking depth, text compression, and sub-agent count. Users can choose from five predefined levels — from an economical **Trivial** tier to a powerful **Expert** tier — or make manual adjustments. Throughout the session, MOS monitors incoming requests and suggests real-time configuration updates to ensure optimal alignment between task complexity and allocated processing power.
 
-- A quick Q&A **doesn't need Opus + extended thinking** — that's burning tokens.
-- A full architecture rewrite **needs** more than Haiku with caveman-ultra.
-- Most people pick one config and leave it. That's overkill or underpowered, every time.
-
-**MOS fixes this automatically.**
+**The goal: maximize productivity and cut operational costs by 30–75% — without compromising output quality.**
 
 ---
 
