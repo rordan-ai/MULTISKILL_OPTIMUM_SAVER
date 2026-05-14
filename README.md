@@ -96,7 +96,7 @@ Hebrew version:
 npx multiskill-optimum-saver --hebrew
 ```
 
-That's it. One command — MOS is ready.
+That's it. One command — MOS is ready. **Caveman skill is installed automatically** as a required dependency.
 
 ### Alternative: global install
 

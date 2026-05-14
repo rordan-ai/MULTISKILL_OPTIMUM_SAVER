@@ -10,6 +10,24 @@ echo "════════════════════════�
 echo "  MULTISKILL OPTIMUM SAVER — Installer"
 echo "══════════════════════════════════════════"
 
+# Install Caveman skill (required dependency)
+CAVEMAN_DIR=~/.claude/skills/caveman
+if [ ! -f "$CAVEMAN_DIR/SKILL.md" ]; then
+  echo "Installing Caveman skill (required)..."
+  mkdir -p "$CAVEMAN_DIR"
+  CAVEMAN_URL="https://raw.githubusercontent.com/JuliusBrussee/caveman/main/SKILL.md"
+  if command -v curl &>/dev/null; then
+    curl -sL "$CAVEMAN_URL" -o "$CAVEMAN_DIR/SKILL.md"
+  elif command -v wget &>/dev/null; then
+    wget -qO "$CAVEMAN_DIR/SKILL.md" "$CAVEMAN_URL"
+  else
+    echo "WARNING: curl/wget not found. Install Caveman manually: https://github.com/JuliusBrussee/caveman"
+  fi
+  echo "✓ Caveman skill installed"
+else
+  echo "  Caveman skill already installed — skipped"
+fi
+
 # Create directories
 mkdir -p ~/.claude/skills/multiskill-optimum-saver
 mkdir -p ~/.claude/hooks

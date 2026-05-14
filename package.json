@@ -1,6 +1,6 @@
 {
   "name": "multiskill-optimum-saver",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "AI optimization layer for Claude Code. Auto-scores task complexity (0-140), matches config to needs. Easy install: npx multiskill-optimum-saver",
   "bin": {
     "mos-install": "bin/mos-install.js"

@@ -144,6 +144,33 @@ Confirm: `✓ [LEVEL] active. Model: [m] · Caveman: [c] · Thinking: [t] · Sub
 
 ---
 
+## STATUS DECLARATION (every response, mandatory)
+
+First line of **every response** — before any content:
+
+```
+🧠 MOS [LEVEL] · score [n]/140
+```
+
+Example: `🧠 MOS MEDIUM · score 64/140`
+
+Rules:
+- Applies to **all agents and subagents** (main, Explore, Plan, general-purpose, etc.)
+- Updated immediately when level changes
+- Never omit — even on short answers
+- If caveman is also active, combine: `🧠 MOS MEDIUM · score 64/140 · caveman (full)`
+
+---
+
+## ENFORCEMENT
+
+1. **Session start block (STEP 3) is blocking** — no response before displaying it.
+2. **Status declaration** — every response, every agent.
+3. **SessionStart hook** prints `MOS: active` as confirmation.
+4. If MOS block was skipped at session start, the first user prompt triggers it before answering.
+
+---
+
 ## SESSION COMMANDS
 
 | Command | Action |

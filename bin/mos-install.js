@@ -20,6 +20,29 @@ function ensureDir(dir) {
   fs.mkdirSync(dir, { recursive: true });
 }
 
+// Install Caveman skill (required dependency)
+const cavemanDir = path.join(claudeDir, "skills", "caveman");
+ensureDir(cavemanDir);
+const cavemanSkill = path.join(cavemanDir, "SKILL.md");
+if (!fs.existsSync(cavemanSkill)) {
+  console.log("    Installing Caveman skill (required)...");
+  try {
+    const { execSync } = require("child_process");
+    const cavemanUrl =
+      "https://raw.githubusercontent.com/JuliusBrussee/caveman/main/SKILL.md";
+    execSync(`curl -sL "${cavemanUrl}" -o "${cavemanSkill}"`, {
+      stdio: "pipe",
+    });
+    console.log("OK  Caveman skill installed");
+  } catch {
+    console.log(
+      "!!  Could not download Caveman. Install manually: https://github.com/JuliusBrussee/caveman"
+    );
+  }
+} else {
+  console.log("--  Caveman skill already installed — skipped");
+}
+
 // Create directories
 ensureDir(skillDir);
 ensureDir(path.join(claudeDir, "hooks"));

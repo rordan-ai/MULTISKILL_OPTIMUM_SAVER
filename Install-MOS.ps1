@@ -15,6 +15,23 @@ Write-Host "══════════════════════�
 Write-Host "  MULTISKILL OPTIMUM SAVER — Installer"
 Write-Host "══════════════════════════════════════════"
 
+# Install Caveman skill (required dependency)
+$cavemanDir = Join-Path $ClaudeDir "skills\caveman"
+$cavemanSkill = Join-Path $cavemanDir "SKILL.md"
+New-Item -ItemType Directory -Force -Path $cavemanDir | Out-Null
+if (-not (Test-Path $cavemanSkill)) {
+    Write-Host "  Installing Caveman skill (required)..."
+    try {
+        $cavemanUrl = "https://raw.githubusercontent.com/JuliusBrussee/caveman/main/SKILL.md"
+        Invoke-WebRequest -Uri $cavemanUrl -OutFile $cavemanSkill -UseBasicParsing
+        Write-Host "[OK] Caveman skill installed"
+    } catch {
+        Write-Host "[!] Could not download Caveman. Install manually: https://github.com/JuliusBrussee/caveman"
+    }
+} else {
+    Write-Host "  Caveman skill already installed - skipped"
+}
+
 # Create directories
 $skillDir = Join-Path $ClaudeDir "skills\multiskill-optimum-saver"
 New-Item -ItemType Directory -Force -Path $skillDir | Out-Null
