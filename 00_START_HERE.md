@@ -1,35 +1,35 @@
-# Start Here — MULTISKILL OPTIMUM SAVER
+# Start Here — MOS
 
 Welcome! This is the entry point for everything you need.
 
 ---
 
-## What is this?
+## What is MOS?
 
-**MULTISKILL OPTIMUM SAVER (MOS)** is a Claude Code skill that automatically evaluates your session complexity at startup and recommends the optimal configuration — model, thinking level, subagents, and compression — so you're never over-spending tokens on simple tasks or under-powered on complex ones.
+**MOS (Multiskill Optimum Saver)** is a Claude Code skill that automatically evaluates your session complexity at startup and recommends the optimal configuration — model, thinking level, subagents, and compression — so you're never over-spending tokens on simple tasks or under-powered on complex ones.
 
 ---
 
 ## 3-Minute Setup
 
-### Step 1 — Clone
+### Option A — npm (recommended)
 
 ```bash
-git clone https://github.com/rordan-ai/MULTISKILL_OPTIMUM_SAVER.git
-cd MULTISKILL_OPTIMUM_SAVER
+npx mos-claude
 ```
 
-### Step 2 — Install
+### Option B — Clone & run
 
-**Linux / Mac:**
 ```bash
+git clone https://github.com/rordan-ai/MOS.git
+cd MULTISKILL_OPTIMUM_SAVER
 bash install.sh           # English
 bash install.sh --hebrew  # Hebrew
 ```
 
 **Windows:** Right-click `Install-MOS.ps1` → *Run with PowerShell*
 
-### Step 3 — Restart Claude
+### Then — Restart Claude
 
 Restart Claude Code or Claude Desktop. That's it.
 
@@ -40,7 +40,7 @@ Restart Claude Code or Claude Desktop. That's it.
 At the start of every Claude session, you'll see:
 
 ```
-╔═ MOS — MULTISKILL OPTIMUM SAVER ══════════════╗
+╔═ MOS ═════════════════════════════════════════╗
 ║  Model: sonnet        Sub: haiku×3            ║
 ║  Caveman: lite        Thinking: low           ║
 ║  Compact@: 60%        Score: 64/140           ║
@@ -71,12 +71,13 @@ If there's a mismatch, MOS will recommend specific changes and wait for `yes` or
 
 | Command | What it does |
 |---------|-------------|
-| `/governor` | Show current config + score |
-| `/mos-preset HARD` | Apply HARD complexity preset immediately |
-| `/mos-reset` | Restore defaults |
+| `/mos` | Show current config + score |
+| `/mos [1-5]` | Apply preset immediately |
+| `/mos reset` | Restore defaults |
+| `/mos save` | Save current as default |
 
 ---
 
 ## Questions?
 
-Open an [issue](https://github.com/rordan-ai/MULTISKILL_OPTIMUM_SAVER/issues) or start a [discussion](https://github.com/rordan-ai/MULTISKILL_OPTIMUM_SAVER/discussions).
+Open an [issue](https://github.com/rordan-ai/MOS/issues) or start a [discussion](https://github.com/rordan-ai/MOS/discussions).

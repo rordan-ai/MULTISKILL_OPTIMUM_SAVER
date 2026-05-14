@@ -1,11 +1,12 @@
-# 🧠 MULTISKILL OPTIMUM SAVER (MOS)
+# 🧠 MOS
+### Multiskill Optimum Saver
 
 **AI optimization layer for Claude Code — match processing power to task complexity, automatically.**
 
 ![MOS Infographic](assets/mos-%20infographics.png)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-2.0.0-orange)](SKILL_EN.md)
+[![Version](https://img.shields.io/badge/version-3.0.0-orange)](SKILL_EN.md)
 [![Bilingual](https://img.shields.io/badge/lang-EN%20%7C%20HE-purple)](SKILL_HE.md)
 
 ---
@@ -35,7 +36,7 @@ At the start of every Claude session, MOS:
 ## Status Block (every session)
 
 ```
-╔═ MOS — MULTISKILL OPTIMUM SAVER ══════════════╗
+╔═ MOS ═════════════════════════════════════════╗
 ║  Model: sonnet        Sub: haiku×3            ║
 ║  Caveman: lite        Thinking: low           ║
 ║  Compact@: 60%        Score: 64/140           ║
@@ -90,12 +91,12 @@ At the start of every Claude session, MOS:
 ### Easy install (recommended)
 
 ```bash
-npx multiskill-optimum-saver
+npx mos-claude
 ```
 
 Hebrew version:
 ```bash
-npx multiskill-optimum-saver --hebrew
+npx mos-claude --hebrew
 ```
 
 That's it. One command — MOS is ready. **Caveman skill is installed automatically** as a required dependency.
@@ -103,7 +104,7 @@ That's it. One command — MOS is ready. **Caveman skill is installed automatica
 ### Alternative: global install
 
 ```bash
-npm i -g multiskill-optimum-saver
+npm i -g mos-claude
 mos-install            # English
 mos-install --hebrew   # Hebrew
 ```
@@ -111,7 +112,7 @@ mos-install --hebrew   # Hebrew
 ### Alternative: clone & run
 
 ```bash
-git clone https://github.com/rordan-ai/MULTISKILL_OPTIMUM_SAVER.git
+git clone https://github.com/rordan-ai/MOS.git
 cd MULTISKILL_OPTIMUM_SAVER
 bash install.sh           # English
 bash install.sh --hebrew  # Hebrew
@@ -151,4 +152,4 @@ MIT — free to use, modify, and distribute.
 
 ---
 
-⭐ Star if useful | 🐛 [Issues](https://github.com/rordan-ai/MULTISKILL_OPTIMUM_SAVER/issues) | 💬 [Discuss](https://github.com/rordan-ai/MULTISKILL_OPTIMUM_SAVER/discussions)
+⭐ Star if useful | 🐛 [Issues](https://github.com/rordan-ai/MOS/issues) | 💬 [Discuss](https://github.com/rordan-ai/MOS/discussions)

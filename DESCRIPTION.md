@@ -1,6 +1,7 @@
-# MULTISKILL OPTIMUM SAVER — Technical Documentation
+# MOS — Technical Documentation
+### Multiskill Optimum Saver
 
-Version 2.0.0 | MIT License | Bilingual (EN + HE)
+Version 3.0.0 | MIT License | Bilingual (EN + HE)
 
 ---
 
@@ -25,7 +26,7 @@ Version 2.0.0 | MIT License | Bilingual (EN + HE)
 
 ## 1. Problem Statement
 
-Claude Code users face a persistent optimization problem: **config is set once and left unchanged**.
+Claude Code users face a persistent optimization problem: **config is set once and left unchanged.**
 
 A developer opens Claude Code Monday morning with Opus + extended thinking + 5 subagents. They use it for a quick question about a regex, renaming a variable across 3 files, and designing a full microservices architecture. All three tasks run on the same config. Two of them are massively over-resourced. One might be under-resourced.
 
@@ -49,7 +50,7 @@ Session starts → MOS reads session-config.json → scans project context → c
 ```
 ~/.claude/
 ├── skills/
-│   └── multiskill-optimum-saver/
+│   └── mos/
 │       └── SKILL.md          ← Core skill logic
 ├── session-config.json        ← User configuration
 └── settings.json              ← Hooks (SessionStart)
@@ -124,11 +125,10 @@ Borderline: score ≥ 80% of minimum → soft warning instead of full mismatch.
 
 | Command | Description |
 |---------|-------------|
-| `/governor` | Display current config status |
-| `/mos-status` | Alias for /governor |
-| `/mos-preset LEVEL` | Apply preset for complexity level |
-| `/mos-reset` | Restore default config |
-| `/mos-save` | Save current config as default |
+| `/mos` | Display current config status + level menu |
+| `/mos [1-5]` | Apply preset for complexity level |
+| `/mos reset` | Restore default config |
+| `/mos save` | Save current config as default |
 
 ---
 
@@ -178,7 +178,7 @@ Borderline: score ≥ 80% of minimum → soft warning instead of full mismatch.
 
 **Cannot do in claude.ai Chat:** Write files or set env vars. Advisory mode only.
 
-**Complexity detection:** Can misclassify when first message is ambiguous. Use `/mos-preset [level]` to override.
+**Complexity detection:** Can misclassify when first message is ambiguous. Use `/mos [1-5]` to override.
 
 **Why not auto-apply?** Forced changes mid-workflow break focus. One-word approval keeps user in control.
 
@@ -203,7 +203,7 @@ Borderline: score ≥ 80% of minimum → soft warning instead of full mismatch.
   "memory": { "decisions_file": true, "claude_mem": false },
   "codebase_index": false,
   "claudeignore": true,
-  "active_skills": ["multiskill-optimum-saver", "caveman", "strategic-compact"]
+  "active_skills": ["mos", "caveman", "strategic-compact"]
 }
 ```
 
@@ -217,4 +217,4 @@ Borderline: score ≥ 80% of minimum → soft warning instead of full mismatch.
 
 ---
 
-*MULTISKILL OPTIMUM SAVER v2.0.0 — MIT License — Built by [rordan-ai](https://github.com/rordan-ai)*
+*MOS v3.0.0 — MIT License — Built by [rordan-ai](https://github.com/rordan-ai)*

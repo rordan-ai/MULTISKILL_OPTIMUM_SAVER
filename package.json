@@ -1,7 +1,7 @@
 {
-  "name": "multiskill-optimum-saver",
-  "version": "2.3.0",
-  "description": "AI optimization layer for Claude Code. Auto-scores task complexity (0-140), matches config to needs. Easy install: npx multiskill-optimum-saver",
+  "name": "mos-claude",
+  "version": "3.0.0",
+  "description": "MOS — AI optimization layer for Claude Code. Auto-scores task complexity (0-140), matches config to needs. Easy install: npx mos-claude",
   "bin": {
     "mos-install": "bin/mos-install.js"
   },
@@ -18,9 +18,9 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rordan-ai/MULTISKILL_OPTIMUM_SAVER.git"
+    "url": "https://github.com/rordan-ai/MOS.git"
   },
-  "homepage": "https://github.com/rordan-ai/MULTISKILL_OPTIMUM_SAVER",
+  "homepage": "https://github.com/rordan-ai/MOS",
   "files": [
     "bin/",
     "SKILL_EN.md",

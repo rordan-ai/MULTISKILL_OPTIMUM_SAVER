@@ -1,11 +1,12 @@
 ---
-name: multiskill-optimum-saver
+name: mos
 description: >
+  MOS (Multiskill Optimum Saver) — AI optimization layer for Claude Code.
   Evaluates session complexity at start, displays a numbered level menu with
   full parameters, and monitors every prompt for complexity drift — offering
   to upgrade or downgrade in real time. Multi-skill bundle: caveman,
   codebase-memory, strategic-compact, css-expert, ad-creative.
-  Triggers: session start, every user prompt, /governor, /mos-status.
+  Triggers: session start, every user prompt, /mos.
 version: 3.0.0
 always: true
 requires:
@@ -13,7 +14,7 @@ requires:
   - affaan-m/everything-claude-code/strategic-compact
 ---
 
-# MOS — MULTISKILL OPTIMUM SAVER
+# MOS — Multiskill Optimum Saver
 
 ## PRESET TABLE
 

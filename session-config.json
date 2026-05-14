@@ -21,7 +21,7 @@
   "claudeignore": true,
   "path_scoped_rules": true,
   "active_skills": [
-    "multiskill-optimum-saver",
+    "mos",
     "caveman",
     "strategic-compact",
     "css-expert",

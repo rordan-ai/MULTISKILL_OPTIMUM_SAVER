@@ -1,10 +1,11 @@
 ---
-name: multiskill-optimum-saver
+name: mos
 description: >
+  MOS (Multiskill Optimum Saver) — שכבת אופטימיזציה ל-Claude Code.
   בודק מורכבות session בתחילתו, מציג תפריט ממוספר עם פרמטרים מלאים,
   ומעריך כל פרומפט תוך כדי session — מציע שדרוג/הורדת רמה בזמן אמת.
   חבילת סקילים: caveman, codebase-memory, strategic-compact, css-expert, ad-creative.
-  Triggers: session start, every user prompt, /governor, /mos-status.
+  Triggers: session start, every user prompt, /mos.
 version: 3.0.0
 always: true
 requires:
@@ -12,7 +13,7 @@ requires:
   - affaan-m/everything-claude-code/strategic-compact
 ---
 
-# MOS — MULTISKILL OPTIMUM SAVER
+# MOS — Multiskill Optimum Saver
 
 ## טבלת פרסטים
 
