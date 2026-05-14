@@ -2,6 +2,8 @@
 
 **AI optimization layer for Claude Code — match processing power to task complexity, automatically.**
 
+![MOS Infographic](assets/mos-%20infographics.png)
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-2.0.0-orange)](SKILL_EN.md)
 [![Bilingual](https://img.shields.io/badge/lang-EN%20%7C%20HE-purple)](SKILL_HE.md)
