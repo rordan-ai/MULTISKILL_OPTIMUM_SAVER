@@ -1,145 +1,137 @@
 ---
 name: multiskill-optimum-saver
 description: >
-  בודק מורכבות session בתחילתו, ממליץ על שינויי config ומבצע אותם
-  באישור. חבילת סקילים: caveman, codebase-memory, strategic-compact,
-  css-expert, ad-creative, mobile-responsiveness.
-  Triggers: session start, /governor, /mos-status, "מה הסטטוס",
-  "אופטימיזציה", "what's my config".
-version: 2.0.0
+  בודק מורכבות session בתחילתו, מציג תפריט ממוספר עם פרמטרים מלאים,
+  ומעריך כל פרומפט תוך כדי session — מציע שדרוג/הורדת רמה בזמן אמת.
+  חבילת סקילים: caveman, codebase-memory, strategic-compact, css-expert, ad-creative.
+  Triggers: session start, every user prompt, /governor, /mos-status.
+version: 3.0.0
 always: true
 requires:
   - JuliusBrussee/caveman
   - affaan-m/everything-claude-code/strategic-compact
 ---
 
-# MULTISKILL OPTIMUM SAVER — גרסה עברית
+# MOS — MULTISKILL OPTIMUM SAVER
 
-## שלב 1 — קריאת CONFIG נוכחי
+## טבלת פרסטים
 
-בתחילת כל session, הרץ בשקט:
-
-```bash
-cat ~/.claude/session-config.json 2>/dev/null || echo "CONFIG_NOT_FOUND"
-```
-
-אם CONFIG_NOT_FOUND — השתמש בברירות מחדל:
-model=sonnet, caveman=lite, thinking=low, subagents=3(haiku),
-compact_threshold=60, max_thinking_tokens=10000
-
-חשב score:
-- model: haiku=18, sonnet=58, opus=100
-- thinking: off=0, low=8, high=22, max=38
-- caveman: off=0, lite=-2, full=-8, ultra=-16
-- subagents: מספר x (haiku=4 | sonnet=7), מוגבל ל-28
-- claude-mem: +4, codebase-memory: +6
+| # | רמה     | Model  | Caveman | Thinking | Subagents  | Score |
+|---|---------|--------|---------|----------|------------|-------|
+| 1 | TRIVIAL | haiku  | ultra   | off      | 0          | ~2    |
+| 2 | SIMPLE  | sonnet | full    | off      | 1×haiku    | ~48   |
+| 3 | MEDIUM  | sonnet | lite    | low      | 3×haiku    | ~64   |
+| 4 | HARD    | sonnet | lite    | high     | 4×sonnet   | ~98   |
+| 5 | EXPERT  | opus   | off     | high     | 5×sonnet   | ~157  |
 
 ---
 
-## שלב 2 — זיהוי מורכבות SESSION
-
-הרץ בשקט:
+## שלב 1 — קריאת CONFIG (שקט)
 
 ```bash
+cat ~/.claude/session-config.json 2>/dev/null || echo "CONFIG_NOT_FOUND"
 find . -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" 2>/dev/null | wc -l
 git log --oneline -3 2>/dev/null
 head -20 CLAUDE.md 2>/dev/null || head -20 .claude/CLAUDE.md 2>/dev/null
 ```
 
-סיווג לפי סיגנלים + הודעת המשתמש הראשונה:
+ברירות מחדל: model=sonnet, caveman=lite, thinking=low, subagents=3×haiku, compact=60%
 
-| מורכבות          | Score מינימלי | סיגנלים אופייניים |
-|------------------|---------------|-------------------|
-| פשוטה            | 18            | שאלה, תרגום, סיכום, הסבר |
-| לא מורכבת        | 32            | fix, תיקון, שינוי, הוספה קטנה |
-| מורכבת           | 55            | refactor, פיצ'ר, debug, component |
-| בינ' מורכבת      | 75            | ארכיטקטורה, integration, agent, PRD |
-| מורכבת מאוד      | 90            | rewrite, cross-cutting, כל הפרויקט, multi-agent |
+Score: model(haiku=18/sonnet=58/opus=100) + thinking(off=0/low=8/high=22/max=38) + caveman(off=0/lite=−2/full=−8/ultra=−16) + subagents(haiku×4/sonnet×7, מקס 28)
 
 ---
 
-## שלב 3 — הצגת סטטוס
+## שלב 2 — זיהוי מורכבות
 
-הצג בדיוק זה בתחילת כל session:
-
-```
-╔═ MOS — MULTISKILL OPTIMUM SAVER ══════════════╗
-║  מודל: [model]        Sub: [sub_model]×[n]    ║
-║  Caveman: [level]     Thinking: [level]        ║
-║  Compact@: [n]%       Score: [score]/140       ║
-╠═══════════════════════════════════════════════╣
-║  Session: [מורכבות]   זוהה מ: [סיבה קצרה]   ║
-║  סטטוס: [✓ מתאים | ~ גבולי | ⚠ אי-התאמה]   ║
-╚═══════════════════════════════════════════════╝
-```
-
-כללי הסטטוס:
-- score >= minScore → ✓ Config מתאים לצרכי ה-session
-- score >= minScore × 0.8 → ~ גבולי — שינוי קל מומלץ
-- score < minScore × 0.8 → ⚠ אי-התאמה — ראה המלצה
+| רמה     | Score מינ | סיגנלים |
+|---------|-----------|---------|
+| TRIVIAL | 18        | שאלה, תרגום, סיכום, הסבר |
+| SIMPLE  | 32        | fix, תיקון, שינוי, קובץ בודד |
+| MEDIUM  | 55        | refactor, פיצ'ר, debug, component |
+| HARD    | 75        | ארכיטקטורה, integration, agent, PRD |
+| EXPERT  | 90        | rewrite, cross-cutting, multi-agent |
 
 ---
 
-## שלב 4 — המלצה (רק אם יש אי-התאמה)
+## שלב 3 — SESSION START (חובה, לפני תגובה ראשונה)
 
-אם יש אי-התאמה, הוסף:
+הצג בדיוק זה וחכה לקלט:
 
 ```
-המלצה: Config מכוון ל[רמה נוכחית], ה-session דורש [רמה מזוהה].
-
-שינויים מוצעים:
-  model:         [נוכחי] → [מומלץ]
-  thinking:      [נוכחי] → [מומלץ]
-  caveman_level: [נוכחי] → [מומלץ]
-  max_subagents: [נוכחי] → [מומלץ]
-
-כתוב "כן" או "אשר" להחלה אוטומטית.
-כתוב "לא" להשאיר את הconfig הנוכחי.
+╔═ MOS ══════════════════════════════════════════════╗
+║  זוהה: [LEVEL]                    Score: [n]/140   ║
+║  Model: [model] · Thinking: [lvl] · Compact: [n]%  ║
+║  Caveman: [lvl] · Subagents: [n]×[model]           ║
+║  סטטוס: [✓ מתאים | ~ גבולי | ⚠ אי-התאמה]         ║
+╠════════════════════════════════════════════════════╣
+║  שנה רמה? הקלד מספר — Enter להמשיך               ║
+║                                                    ║
+║  1. TRIVIAL │ haiku  · ultra · off  · 0 subs       ║
+║  2. SIMPLE  │ sonnet · full  · off  · 1×haiku      ║
+║  3. MEDIUM  │ sonnet · lite  · low  · 3×haiku      ║
+║  4. HARD    │ sonnet · lite  · high · 4×sonnet     ║
+║  5. EXPERT  │ opus   · off   · high · 5×sonnet     ║
+╚════════════════════════════════════════════════════╝
 ```
 
-ערכי פרסט לפי מורכבות:
-
-| מורכבות       | model  | caveman | thinking | subagents | sub_model |
-|---------------|--------|---------|----------|-----------|-----------|
-| פשוטה         | haiku  | ultra   | off      | 0         | haiku     |
-| לא מורכבת     | sonnet | full    | off      | 1         | haiku     |
-| מורכבת        | sonnet | lite    | low      | 3         | haiku     |
-| בינ' מורכבת   | sonnet | lite    | high     | 4         | sonnet    |
-| מורכבת מאוד   | opus   | off     | high     | 5         | sonnet    |
+→ הרמה הנוכחית/המזוהה: סמן ✓ בסוף השורה שלה.
+→ בחירת 1–5: החל פרסט (שלב 5). אשר: `✓ עבר ל-[LEVEL].`
+→ Enter / אחר: המשך בשקט.
 
 ---
 
-## שלב 5 — ביצוע באישור
+## שלב 4 — מעקב פרומפטים (כל פרומפט)
 
-אם המשתמש כתב "כן", "אשר", "yes", "approve":
+אחרי כל פרומפט, בחן בשקט אם רמת המורכבות שונה ב-2+ רמות מהנוכחי.
 
-1. כתוב config מעודכן:
+**פשוט מדי:**
+```
+💡 פרומפט פשוט יחסית לרמה הנוכחית ([LEVEL]). להוריד רמה?
+  [הצג רק רמות מתחת לנוכחית עם פרמטרים מלאים]
+  [Enter = המשך ב-[LEVEL]]
+```
+
+**מורכב מדי:**
+```
+⚠ פרומפט מורכב יחסית לרמה הנוכחית ([LEVEL]). לשדרג רמה?
+  [הצג רק רמות מעל לנוכחית עם פרמטרים מלאים]
+  [Enter = המשך ב-[LEVEL]]
+```
+
+ספים: מקס פעם אחת לכל 5 פרומפטים · לא חוזר על דחייה · מינימום פער 2 רמות.
+
+---
+
+## שלב 5 — החלת פרסט
+
 ```bash
 cat > ~/.claude/session-config.json << 'EOF'
 {
-  "model_default": "[מומלץ]",
+  "model_default": "[model]",
   "subagent": { "model": "[sub]", "max": [n], "parallel": true },
-  "caveman": { "enabled": true, "level": "[רמה]", "compress_claude_md": true },
-  "compact_threshold": [n],
-  "extended_thinking": "[רמה]",
-  "max_thinking_tokens": [n]
+  "caveman": { "enabled": true, "level": "[caveman]", "compress_claude_md": true },
+  "compact_threshold": [compact],
+  "extended_thinking": "[thinking]",
+  "max_thinking_tokens": [tokens]
 }
 EOF
+export ANTHROPIC_MODEL="[model]"
+export CLAUDE_CODE_SUBAGENT_MODEL="[sub]"
 ```
 
-2. הגדר env vars לsession הנוכחי:
-```bash
-export ANTHROPIC_MODEL="[מודל]"
-export CLAUDE_CODE_SUBAGENT_MODEL="[sub_model]"
-```
+| רמה     | model  | sub    | n | caveman | thinking | tokens | compact |
+|---------|--------|--------|---|---------|----------|--------|---------|
+| TRIVIAL | haiku  | haiku  | 0 | ultra   | off      | 0      | 40%     |
+| SIMPLE  | sonnet | haiku  | 1 | full    | off      | 0      | 50%     |
+| MEDIUM  | sonnet | haiku  | 3 | lite    | low      | 8000   | 60%     |
+| HARD    | sonnet | sonnet | 4 | lite    | high     | 15000  | 70%     |
+| EXPERT  | opus   | sonnet | 5 | off     | high     | 32000  | 80%     |
 
-3. אשר: "✓ Config עודכן ופעיל ל-session זה."
-
-אם סרב: "→ נשמר config נוכחי. מוכן לעבודה."
+אשר: `✓ [LEVEL] פעיל. Model: [m] · Caveman: [c] · Thinking: [t] · Subs: [n]×[s]`
 
 ---
 
-## ניתוב סקילים (אוטומטי, שקט)
+## ניתוב סקילים (שקט)
 
 | טריגר | סקיל |
 |-------|-------|
@@ -155,8 +147,8 @@ export CLAUDE_CODE_SUBAGENT_MODEL="[sub_model]"
 
 | פקודה | פעולה |
 |-------|-------|
-| /governor | הצג סטטוס config נוכחי |
+| /governor | הצג סטטוס + תפריט רמות מלא |
 | /mos-status | זהה ל-/governor |
-| /mos-preset [רמה] | החל פרסט לרמת מורכבות |
-| /mos-reset | שחזר config ברירת מחדל |
+| /mos-preset [1-5] | החל פרסט מיידי |
+| /mos-reset | שחזר ל-MEDIUM (ברירת מחדל) |
 | /mos-save | שמור config נוכחי כברירת מחדל |
