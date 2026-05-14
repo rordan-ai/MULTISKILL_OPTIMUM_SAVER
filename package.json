@@ -1,0 +1,31 @@
+{
+  "name": "multiskill-optimum-saver",
+  "version": "2.0.0",
+  "description": "AI optimization layer for Claude Code. Auto-scores task complexity (0-140), matches config to needs. Easy install: npx multiskill-optimum-saver",
+  "bin": {
+    "mos-install": "bin/mos-install.js"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "ai",
+    "optimization",
+    "token-saving",
+    "skill",
+    "caveman"
+  ],
+  "author": "rordan-ai",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rordan-ai/MULTISKILL_OPTIMUM_SAVER.git"
+  },
+  "homepage": "https://github.com/rordan-ai/MULTISKILL_OPTIMUM_SAVER",
+  "files": [
+    "bin/",
+    "SKILL_EN.md",
+    "SKILL_HE.md",
+    "session-config.json",
+    "00_START_HERE.md"
+  ]
+}

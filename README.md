@@ -85,6 +85,29 @@ At the start of every Claude session, MOS:
 
 ## Installation
 
+### Easy install (recommended)
+
+```bash
+npx multiskill-optimum-saver
+```
+
+Hebrew version:
+```bash
+npx multiskill-optimum-saver --hebrew
+```
+
+That's it. One command — MOS is ready.
+
+### Alternative: global install
+
+```bash
+npm i -g multiskill-optimum-saver
+mos-install            # English
+mos-install --hebrew   # Hebrew
+```
+
+### Alternative: clone & run
+
 ```bash
 git clone https://github.com/rordan-ai/MULTISKILL_OPTIMUM_SAVER.git
 cd MULTISKILL_OPTIMUM_SAVER
@@ -92,11 +115,11 @@ bash install.sh           # English
 bash install.sh --hebrew  # Hebrew
 ```
 
-Restart Claude Code / Claude Desktop. Done.
-
 **Windows:** Right-click `Install-MOS.ps1` → Run with PowerShell
 
 **claude.ai:** Paste `SKILL_EN.md` into Project Instructions.
+
+Restart Claude Code / Claude Desktop. Done.
 
 ---
 
