@@ -127,9 +127,10 @@ Restart Claude Code / Claude Desktop. Done.
 
 | Command | Action |
 |---------|--------|
-| `/governor` | Show config status |
-| `/mos-preset [level]` | Apply preset |
-| `/mos-reset` | Restore defaults |
+| `/mos` | Show config status + level menu |
+| `/mos [1-5]` | Apply preset |
+| `/mos reset` | Restore defaults |
+| `/mos save` | Save current as default |
 
 ---
 

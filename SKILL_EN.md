@@ -175,8 +175,7 @@ Rules:
 
 | Command | Action |
 |---------|--------|
-| /governor | Show full status + level menu |
-| /mos-status | Same as /governor |
-| /mos-preset [1-5] | Apply preset immediately |
-| /mos-reset | Restore default (MEDIUM) |
-| /mos-save | Save current as default |
+| `/mos` | Show full status + level menu |
+| `/mos [1-5]` | Apply preset immediately |
+| `/mos reset` | Restore default (MEDIUM) |
+| `/mos save` | Save current as default |

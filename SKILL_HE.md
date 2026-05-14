@@ -174,8 +174,7 @@ export CLAUDE_CODE_SUBAGENT_MODEL="[sub]"
 
 | פקודה | פעולה |
 |-------|-------|
-| /governor | הצג סטטוס + תפריט רמות מלא |
-| /mos-status | זהה ל-/governor |
-| /mos-preset [1-5] | החל פרסט מיידי |
-| /mos-reset | שחזר ל-MEDIUM (ברירת מחדל) |
-| /mos-save | שמור config נוכחי כברירת מחדל |
+| `/mos` | הצג סטטוס + תפריט רמות מלא |
+| `/mos [1-5]` | החל פרסט מיידי |
+| `/mos reset` | שחזר ל-MEDIUM (ברירת מחדל) |
+| `/mos save` | שמור config נוכחי כברירת מחדל |
