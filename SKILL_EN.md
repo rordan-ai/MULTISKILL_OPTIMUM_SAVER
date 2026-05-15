@@ -7,7 +7,7 @@ description: >
   to upgrade or downgrade in real time. Multi-skill bundle: caveman,
   codebase-memory, strategic-compact, css-expert, ad-creative.
   Triggers: session start, every user prompt, /mos.
-version: 3.0.0
+version: 3.2.0
 always: true
 requires:
   - JuliusBrussee/caveman
@@ -165,12 +165,36 @@ Rules:
 
 ---
 
+## SUBAGENT LEVEL TRANSPARENCY (mandatory)
+
+When **any agent or subagent** (Explore, Plan, general-purpose, QA, security, or any other) changes MOS level — even by a single level — it **MUST** notify the user with:
+
+```
+🔄 MOS level change: [OLD_LEVEL] → [NEW_LEVEL] (reason: [brief reason])
+```
+
+Rules:
+- Applies to **every** level change — including ±1 level jumps.
+- Subagents **may** change level on their own initiative when task complexity demands it — this is allowed and expected.
+- But **silent changes are forbidden**. Every change must be announced before continuing work.
+- The notification is **informational, not blocking** — no need to wait for user approval. Just announce and proceed.
+- If a subagent was spawned at one level but the task turns out simpler/harder, it must announce the shift in its first response after detecting the mismatch.
+
+Example:
+```
+🔄 MOS level change: SIMPLE → MEDIUM (reason: task involves multi-file refactor with cross-dependencies)
+🧠 MOS MEDIUM · score 64/140 · caveman (full)
+```
+
+---
+
 ## ENFORCEMENT
 
 1. **Session start block (STEP 3) is blocking** — no response before displaying it.
 2. **Status declaration** — every response, every agent.
-3. **SessionStart hook** prints `MOS: active` as confirmation.
-4. If MOS block was skipped at session start, the first user prompt triggers it before answering.
+3. **Subagent level transparency** — every level change, every agent, even ±1 level.
+4. **SessionStart hook** prints `MOS: active` as confirmation.
+5. If MOS block was skipped at session start, the first user prompt triggers it before answering.
 
 ---
 
