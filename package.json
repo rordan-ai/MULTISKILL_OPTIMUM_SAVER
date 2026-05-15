@@ -1,6 +1,6 @@
 {
   "name": "mos-claude",
-  "version": "3.1.1",
+  "version": "3.2.0",
   "description": "MOS — AI optimization layer for Claude Code. Auto-scores task complexity (0-140), matches config to needs. Easy install: npx mos-claude",
   "bin": {
     "mos-install": "bin/mos-install.js"
@@ -18,9 +18,9 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rordan-ai/MOS.git"
+    "url": "https://github.com/Yula-Digital/MOS.git"
   },
-  "homepage": "https://github.com/rordan-ai/MOS",
+  "homepage": "https://github.com/Yula-Digital/MOS",
   "files": [
     "bin/",
     "SKILL_EN.md",

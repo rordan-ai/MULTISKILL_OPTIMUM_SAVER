@@ -102,6 +102,8 @@ After every prompt, silently check if complexity is 2+ levels from current confi
 
 Throttle: max once/5 prompts · never repeat declined suggestion · min 2-level gap.
 
+**BLOCKING RULE:** When displaying an upgrade/downgrade suggestion, **STOP completely**. Do NOT continue with any other work. Wait for user input before proceeding. This applies regardless of permission settings, bypass mode, or automation level. The suggestion is a blocking prompt — treat it like a confirmation dialog.
+
 ---
 
 ## STEP 5 — APPLY PRESET

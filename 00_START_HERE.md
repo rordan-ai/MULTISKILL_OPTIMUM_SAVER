@@ -21,7 +21,7 @@ npx mos-claude
 ### Option B — Clone & run
 
 ```bash
-git clone https://github.com/rordan-ai/MOS.git
+git clone https://github.com/Yula-Digital/MOS.git
 cd MULTISKILL_OPTIMUM_SAVER
 bash install.sh           # English
 bash install.sh --hebrew  # Hebrew
@@ -80,4 +80,4 @@ If there's a mismatch, MOS will recommend specific changes and wait for `yes` or
 
 ## Questions?
 
-Open an [issue](https://github.com/rordan-ai/MOS/issues) or start a [discussion](https://github.com/rordan-ai/MOS/discussions).
+Open an [issue](https://github.com/Yula-Digital/MOS/issues) or start a [discussion](https://github.com/Yula-Digital/MOS/discussions).

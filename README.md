@@ -112,7 +112,7 @@ mos-install --hebrew   # Hebrew
 ### Alternative: clone & run
 
 ```bash
-git clone https://github.com/rordan-ai/MOS.git
+git clone https://github.com/Yula-Digital/MOS.git
 cd MULTISKILL_OPTIMUM_SAVER
 bash install.sh           # English
 bash install.sh --hebrew  # Hebrew
@@ -152,4 +152,4 @@ MIT — free to use, modify, and distribute.
 
 ---
 
-⭐ Star if useful | 🐛 [Issues](https://github.com/rordan-ai/MOS/issues) | 💬 [Discuss](https://github.com/rordan-ai/MOS/discussions)
+⭐ Star if useful | 🐛 [Issues](https://github.com/Yula-Digital/MOS/issues) | 💬 [Discuss](https://github.com/Yula-Digital/MOS/discussions)
