@@ -49,7 +49,7 @@ Score: model(haiku=18/sonnet=58/opus=100) + thinking(off=0/low=8/high=22/max=38)
 | TRIVIAL | 18        | שאלה, תרגום, סיכום, הסבר |
 | SIMPLE  | 32        | fix, תיקון, שינוי, קובץ בודד |
 | MEDIUM  | 55        | refactor, פיצ'ר, debug, component |
-| HARD    | 75        | ארכיטקטורה, integration, agent, PRD |
+| HARD    | 77        | ארכיטקטורה, integration, agent, PRD |
 | EXPERT  | 90        | rewrite, cross-cutting, multi-agent |
 
 ---

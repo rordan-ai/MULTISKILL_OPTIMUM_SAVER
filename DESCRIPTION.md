@@ -90,7 +90,7 @@ MOS assigns a numeric score (0–140) to any config combination.
 | TRIVIAL | 18 | Q&A, translation, summarize, explain |
 | SIMPLE | 32 | Fix a bug, rename, single-file edit |
 | MEDIUM | 55 | Feature, refactor, debug, write tests |
-| HARD | 75 | Architecture, integration, agent, PRD |
+| HARD | 77 | Architecture, integration, agent, PRD |
 | EXPERT | 90 | Rewrite, cross-cutting, multi-agent |
 
 Borderline: score ≥ 80% of minimum → soft warning instead of full mismatch.

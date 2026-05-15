@@ -90,7 +90,7 @@ if [ ! -f "$HOOKS_DIR/mos-status-injector.js" ]; then
 const fs=require('fs'),path=require('path'),os=require('os');
 const configPath=path.join(os.homedir(),'.claude','session-config.json');
 const M={haiku:18,sonnet:58,opus:100},T={off:0,low:8,high:22,max:38},C={off:0,lite:-2,full:-8,ultra:-16},S={haiku:4,sonnet:7};
-const L=[{n:'TRIVIAL',m:0},{n:'SIMPLE',m:32},{n:'MEDIUM',m:55},{n:'HARD',m:75},{n:'EXPERT',m:90}];
+const L=[{n:'TRIVIAL',m:0},{n:'SIMPLE',m:32},{n:'MEDIUM',m:55},{n:'HARD',m:77},{n:'EXPERT',m:90}];
 let input='';process.stdin.on('data',c=>{input+=c});
 process.stdin.on('end',()=>{try{
 if(!fs.existsSync(configPath))return;
